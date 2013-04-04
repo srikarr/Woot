@@ -31,7 +31,7 @@ public class Woot {
 			//blocking
 	        @SuppressWarnings("unused")
 			String readLine = console.readLine("Press any key to stop listening: ", (Object[])null);
-	        worker.stop();
+	        listenTask.running = false;
 	        
 	        System.out.println("All done.");
         }
@@ -39,8 +39,8 @@ public class Woot {
 
 	private static AudioFormat getFormat() {
 	    float sampleRate = 44100;
-	    int sampleSizeInBits = 8;
-	    int channels = 1;
+	    int sampleSizeInBits = 16;
+	    int channels = 2;
 	    boolean signed = true;
 	    boolean bigEndian = true;
 	    return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
