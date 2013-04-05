@@ -1,5 +1,7 @@
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.sound.sampled.TargetDataLine;
 
@@ -22,11 +24,40 @@ public class Listen implements Runnable {
 		        }
 		    }
 		    
-		    // debugging output
+		    // debugging output to stdio
 		    byte[] byteArray = out.toByteArray();
 		    System.out.println(byteArray.length);
 		    for(int i= 0 ; i < byteArray.length; i++) {
 		    	System.out.println(byteArray[i]);
+		    }
+		    
+		    // debugging output to file
+		    FileWriter output = null;
+		    PrintWriter writer = null;
+		    try {
+		    	output = new FileWriter("debugging.txt");
+		    	writer = new PrintWriter(output);
+		    	for(int i= 0 ; i < byteArray.length; i++) {
+		    		writer.println(byteArray[i]);
+			    }
+		    } catch (Exception e) {
+		    	System.err.println("Debugging file I/O problems: " + e);
+			    System.exit(-1);
+		    } finally {
+		    	if (output != null) {
+		            try {
+		              output.close();
+		            } catch (IOException e) {
+		              // Ignore issues during closing
+		            }
+		    	}
+		    	if (writer != null) {
+		            try {
+		            	writer.close();
+		            } catch (Exception e) {
+		              // Ignore issues during closing
+		            }
+		    	}
 		    }
 
 		    out.close();
