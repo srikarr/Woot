@@ -1,40 +1,26 @@
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-import java.io.Console;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-public class Woot {
+public class Woot extends Application {
 	
-	public static boolean running = true;
+	public static boolean running = false;
 	public static TargetDataLine line;
 	public static AudioFormat format;
+	public static Listen listenTask;
 	
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
-		System.out.println("Woot!");
-		
-		SetupAudio();
-		
-		Listen listenTask = new Listen();
-		listenTask.running = running;
-		listenTask.line = line;
-		
-		Console console = System.console();
-        if (console != null)
-        {
-			Thread worker = new Thread(listenTask);
-			worker.start();
-		
-			//blocking
-	        @SuppressWarnings("unused")
-			String readLine = console.readLine("Press any key to stop listening: ", (Object[])null);
-	        listenTask.running = false;
-	        
-	        System.out.println("All done.");
-        }
+		launch(args);
 	}
 
 	private static AudioFormat getFormat() {
@@ -59,4 +45,40 @@ public class Woot {
 		}
 	}
 	
+	@Override
+	public void start (Stage primaryStage) {
+		primaryStage.setTitle("Woot");
+        Button btn = new Button();
+        btn.setText("Toggle Listening");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+            	if (listenTask == null) {
+            		listenTask = new Listen();
+            		listenTask.running = true;
+            		listenTask.line = line;
+            		
+            		Thread worker = new Thread(listenTask);
+	    			worker.start();
+	    			
+	    			System.out.println("Listening!");
+            	}
+            	else {
+            		listenTask.running = false;
+            		listenTask = null;
+            		System.out.println("Not Listening!");
+            	}
+            }
+        });
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(btn);
+        primaryStage.setScene(new Scene(root, 300, 250));
+        primaryStage.show();
+        
+        System.out.println("Woot!");
+		
+		SetupAudio();
+	}
 }
