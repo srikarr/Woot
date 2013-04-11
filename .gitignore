@@ -13,3 +13,5 @@ nbproject/private/
 *.out
 
 bin/*
+
+debugging.log
