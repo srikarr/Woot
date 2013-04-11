@@ -6,10 +6,14 @@ import java.io.PrintWriter;
 import javax.sound.sampled.TargetDataLine;
 
 
-public class Listen implements Runnable {
+public class Listener implements Runnable {
+	
+	private static final int BUFFER_LENGTH = 4;
+	private static final String DEBUG_FILE = "debugging.log";
 	
 	public boolean running;
-	public TargetDataLine line;
+	public TargetDataLine targetDataLine;
+	public Integer[] audioData;
 	
 	@Override
 	public void run() {
@@ -17,8 +21,8 @@ public class Listen implements Runnable {
 
 		try {
 		    while (running) {
-		        byte[] buffer = new byte[4];
-		        int count = line.read(buffer, 0, buffer.length);
+		        byte[] buffer = new byte[BUFFER_LENGTH];
+		        int count = targetDataLine.read(buffer, 0, buffer.length);
 		        if (count > 0) {
 		            out.write(buffer, 0, count);
 		        }
@@ -26,16 +30,24 @@ public class Listen implements Runnable {
 		    
 		    // debugging output to stdio
 		    byte[] byteArray = out.toByteArray();
+		    
 		    System.out.println(byteArray.length);
+		    
 		    for(int i= 0 ; i < byteArray.length; i++) {
 		    	System.out.println(byteArray[i]);
+		    }
+		    
+		    // save data for use later
+		    audioData = new Integer[byteArray.length];
+		    for(int i= 0 ; i < byteArray.length; i++) {
+		    	audioData[i] = (int) byteArray[i];
 		    }
 		    
 		    // debugging output to file
 		    FileWriter output = null;
 		    PrintWriter writer = null;
 		    try {
-		    	output = new FileWriter("debugging.txt");
+		    	output = new FileWriter(DEBUG_FILE);
 		    	writer = new PrintWriter(output);
 		    	for(int i= 0 ; i < byteArray.length; i++) {
 		    		writer.println(byteArray[i]);
