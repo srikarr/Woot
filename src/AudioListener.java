@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import javax.sound.sampled.TargetDataLine;
 
 
-public class Listener implements Runnable {
+public class AudioListener implements Runnable {
 	
 	private static final int BUFFER_LENGTH = 4;
 	private static final String DEBUG_FILE = "debugging.log";

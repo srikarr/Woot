@@ -25,7 +25,7 @@ public class Woot extends Application {
 	public static boolean running = false;
 	public static TargetDataLine targetDataLine;
 	public static AudioFormat audioFormat;
-	public static Listener listener;
+	public static AudioListener audioListener;
 	
 	private static final float SAMPLE_RATE = 44100;
 	private static final int SAMPLE_SIZE_IN_BITS = 16;
@@ -64,19 +64,19 @@ public class Woot extends Application {
  
             @Override
             public void handle(ActionEvent event) {
-            	if (listener == null) {
-            		listener = new Listener();
-            		listener.running = true;
-            		listener.targetDataLine = targetDataLine;
+            	if (audioListener == null) {
+            		audioListener = new AudioListener();
+            		audioListener.running = true;
+            		audioListener.targetDataLine = targetDataLine;
             		
-            		Thread worker = new Thread(listener);
+            		Thread worker = new Thread(audioListener);
 	    			worker.start();
 	    			
 	    			System.out.println("Listening!");
             	}
             	else {
-            		listener.running = false;
-            		listener = null;
+            		audioListener.running = false;
+            		audioListener = null;
             		System.out.println("Not Listening!");
             	}
             }
