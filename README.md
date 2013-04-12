@@ -12,9 +12,11 @@ This project aims to expand on the work of Roy van Rijn and create a database us
 * http://www.ee.columbia.edu/~dpwe/papers/Wang03-shazam.pdf [Research paper on how shazam works]
 
 ##Todo
-* Add event listener for audioData updates
-* Display audioData on JavaFX Line Graph
-* Maybe clean up the display and add interpolation
+* Add event listener for audioData updates [DONE]
+* Display audioData on JavaFX Line Graph [DONE]
+* Curve fitting might be nice http://fxexperience.com/2012/01/curve-fitting-and-styling-areachart/
+* Slider control to change size of view, default to max of 1000 data points
+* Slider control to move view, i.e. sliding window
 * Do A FFT to get audio spectrum data
 * Create spectrum analyzer display
 * Implement "interesting data" logic... basically highest magnitude for certain frequency ranges within a given time slice
