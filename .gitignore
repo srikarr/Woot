@@ -14,4 +14,4 @@ nbproject/private/
 
 bin/*
 
-debugging.log
+*.log
