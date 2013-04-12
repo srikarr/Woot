@@ -12,12 +12,15 @@ This project aims to expand on the work of Roy van Rijn and create a database us
 * http://www.ee.columbia.edu/~dpwe/papers/Wang03-shazam.pdf [Research paper on how shazam works]
 
 ##Todo
+* Get audio data [DONE]
+* Threading [DONE]
+* JavaFX UI [DONE]
 * Add event listener for audioData updates [DONE]
 * Display audioData on JavaFX Line Graph [DONE]
 * Curve fitting might be nice http://fxexperience.com/2012/01/curve-fitting-and-styling-areachart/
 * Slider control to change size of view, default to max of 1000 data points
 * Slider control to move view, i.e. sliding window
-* Do A FFT to get audio spectrum data
+* Do A FFT to get audio spectrum data [DONE]
 * Create spectrum analyzer display
 * Implement "interesting data" logic... basically highest magnitude for certain frequency ranges within a given time slice
 * Implement simple hashing based on Roy van Rijn's work
