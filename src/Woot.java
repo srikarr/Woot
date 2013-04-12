@@ -1,6 +1,7 @@
 import javafx.geometry.Insets;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,12 +9,13 @@ import javafx.scene.control.Button;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -32,6 +34,9 @@ public class Woot extends Application {
 	private static final int CHANNELS = 2;
 	private static final boolean SIGNED = true;
 	private static final boolean BIG_ENDIAN = true;
+	
+	private LineChart<Number,Number> lineChart;
+	public Integer[] audioData;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -58,6 +63,38 @@ public class Woot extends Application {
 	@Override
 	public void start (Stage primaryStage) {
 		primaryStage.setTitle("Woot");
+		
+		StackPane root = new StackPane();
+		final Scene theScene = new Scene(root, 300, 250, Color.ALICEBLUE);
+		
+		theScene.addEventHandler(FinishedListeningEvent.FINISHED_LISTENING, new EventHandler<FinishedListeningEvent>(){
+
+			@Override
+			public void handle(FinishedListeningEvent event) {
+				if (event.getEventType().equals(FinishedListeningEvent.FINISHED_LISTENING)) {
+					Platform.runLater(new Runnable() {
+						@Override public void run() {
+							final XYChart.Series<Number, Number> series = new Series<Number, Number>();
+							series.setName("TargetDataLine");
+							
+							if (audioListener.audioData != null) {
+								for(int i= 0 ; i < 10000; i++) {
+									series.getData().add(new Data<Number, Number>(i, audioListener.audioData[i]));
+								}
+								System.out.println(audioListener.audioData.length);
+							}
+							
+							lineChart.getData().clear();
+							lineChart.getData().add(series);
+							
+							audioListener = null;
+						}
+					});
+				}
+			}
+			
+		});
+		
         Button btn = new Button();
         btn.setText("Toggle Listening");
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -68,6 +105,7 @@ public class Woot extends Application {
             		audioListener = new AudioListener();
             		audioListener.running = true;
             		audioListener.targetDataLine = targetDataLine;
+            		audioListener.parentScene = theScene;
             		
             		Thread worker = new Thread(audioListener);
 	    			worker.start();
@@ -76,7 +114,8 @@ public class Woot extends Application {
             	}
             	else {
             		audioListener.running = false;
-            		audioListener = null;
+            		//audioData = audioListener.audioData;
+            		//audioListener = null;
             		System.out.println("Not Listening!");
             	}
             }
@@ -90,27 +129,9 @@ public class Woot extends Application {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("time");
-        final LineChart<Number,Number> lineChart = new LineChart<Number,Number>(xAxis,yAxis);
+        lineChart = new LineChart<Number,Number>(xAxis,yAxis);
         
         lineChart.setTitle("audio data");
-        XYChart.Series series = new XYChart.Series();
-        series.setName("TargetDataLine");
-        
-        // dummy data
-        series.getData().add(new XYChart.Data(1, 0));
-        series.getData().add(new XYChart.Data(2, -14));
-        series.getData().add(new XYChart.Data(3, -15));
-        series.getData().add(new XYChart.Data(4, -24));
-        series.getData().add(new XYChart.Data(5, 34));
-        series.getData().add(new XYChart.Data(6, 36));
-        series.getData().add(new XYChart.Data(7, 22));
-        series.getData().add(new XYChart.Data(8, -45));
-        series.getData().add(new XYChart.Data(9, -43));
-        series.getData().add(new XYChart.Data(10, -17));
-        series.getData().add(new XYChart.Data(11, 29));
-        series.getData().add(new XYChart.Data(12, 25));
-        
-        lineChart.getData().add(series);
         
         // something to fill the bottom
         HBox hbox = new HBox();
@@ -118,7 +139,7 @@ public class Woot extends Application {
         hbox.setSpacing(10);
         hbox.setStyle("-fx-background-color: #336699;");
         
-        StackPane root = new StackPane();
+        
         
         borderPane.setCenter(lineChart);
         borderPane.setTop(btn);
@@ -126,7 +147,7 @@ public class Woot extends Application {
         
         root.getChildren().add(borderPane);
         
-        primaryStage.setScene(new Scene(root, 300, 250, Color.ALICEBLUE));
+        primaryStage.setScene(theScene);
         primaryStage.show();
         
         System.out.println("Woot!");
