@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/jre/lib/jfxrt.jar"/>
 	<classpathentry kind="lib" path="packages/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="packages/jfxrt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
