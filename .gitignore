@@ -14,4 +14,4 @@ nbproject/private/
 
 bin/*
 
-*.log
+*.log*
