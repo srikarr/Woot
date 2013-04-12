@@ -2,9 +2,10 @@ import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
 
+@SuppressWarnings("serial")
 public class FinishedListeningEvent extends Event {
 	    
-	    public static final EventType<FinishedListeningEvent> FINISHED_LISTENING = new EventType(ANY, "FINISHED_LISTENING");
+	    public static final EventType<FinishedListeningEvent> FINISHED_LISTENING = new EventType<FinishedListeningEvent>(ANY, "FINISHED_LISTENING");
 	    
 	    public FinishedListeningEvent() {
 	        this(FINISHED_LISTENING);

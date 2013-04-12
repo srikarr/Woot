@@ -1,16 +1,16 @@
 import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javafx.event.Event;
 import javafx.scene.Scene;
+import org.apache.log4j.Logger;
 
 import javax.sound.sampled.TargetDataLine;
 
 public class AudioListener implements Runnable {
 	
+	private static Logger logger = Logger.getLogger("AudioListener");
+	
 	private static final int BUFFER_LENGTH = 4;
-	private static final String DEBUG_FILE = "debugging.log";
 	
 	public boolean running;
 	public TargetDataLine targetDataLine;
@@ -30,49 +30,17 @@ public class AudioListener implements Runnable {
 		        }
 		    }
 		    
-		    // debugging output to stdio
 		    byte[] byteArray = byteArrayOutputStream.toByteArray();
 		    
+		    // debugging output to stdio
 		    System.out.println(byteArray.length);
-		    
-//		    for(int i= 0 ; i < byteArray.length; i++) {
-//		    	System.out.println(byteArray[i]);
-//		    }
 		    
 		    // save data for use later
 		    audioData = new Integer[byteArray.length];
 		    for(int i= 0 ; i < byteArray.length; i++) {
 		    	audioData[i] = (int) byteArray[i];
+		    	logger.info(audioData[i]);
 		    }
-		    
-		    // debugging output to file
-//		    FileWriter output = null;
-//		    PrintWriter writer = null;
-//		    try {
-//		    	output = new FileWriter(DEBUG_FILE);
-//		    	writer = new PrintWriter(output);
-//		    	for(int i= 0 ; i < byteArray.length; i++) {
-//		    		writer.println(byteArray[i]);
-//			    }
-//		    } catch (Exception e) {
-//		    	System.err.println("Debugging file I/O problems: " + e);
-//			    System.exit(-1);
-//		    } finally {
-//		    	if (output != null) {
-//		            try {
-//		              output.close();
-//		            } catch (IOException e) {
-//		              // Ignore issues during closing
-//		            }
-//		    	}
-//		    	if (writer != null) {
-//		            try {
-//		            	writer.close();
-//		            } catch (Exception e) {
-//		              // Ignore issues during closing
-//		            }
-//		    	}
-//		    }
 
 		    byteArrayOutputStream.close();
 		    
