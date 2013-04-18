@@ -2,7 +2,7 @@
  * @author Orlando Selenu
  * 
  */
-public class FFT {
+public class OrlandoSelenuFFT {
 	/**
      * The Fast Fourier Transform (generic version, with NO optimizations).
      * 

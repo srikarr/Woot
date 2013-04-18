@@ -24,18 +24,18 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Retrieved from: http://en.literateprograms.org/Complex_numbers_(Java)?oldid=18617
 */
 
-public class Complex {
-    public Complex () {
+public class LiterateProgramsComplex {
+    public LiterateProgramsComplex () {
       this.re = 0;
       this.im = 0;
     }
     
-    public Complex(double re, double im) {
+    public LiterateProgramsComplex(double re, double im) {
       this.re = re;
       this.im = im;
     }
     
-    public Complex(Complex input) {
+    public LiterateProgramsComplex(LiterateProgramsComplex input) {
       this.re = input.getRe();
       this.im = input.getIm();
     }
@@ -53,37 +53,37 @@ public class Complex {
     public void setIm(double im) {
       this.im = im;
     }   
-    public Complex add(Complex op) {
-      Complex result = new Complex();
+    public LiterateProgramsComplex add(LiterateProgramsComplex op) {
+      LiterateProgramsComplex result = new LiterateProgramsComplex();
       result.setRe(this.re + op.getRe());
       result.setIm(this.im + op.getIm());
       return result;
     }
     
-    public Complex sub(Complex op) {
-      Complex result = new Complex();
+    public LiterateProgramsComplex sub(LiterateProgramsComplex op) {
+      LiterateProgramsComplex result = new LiterateProgramsComplex();
       result.setRe(this.re - op.getRe());
       result.setIm(this.im - op.getIm());
       return result;
     }
     
-    public Complex mul(Complex op) {
-      Complex result = new Complex();
+    public LiterateProgramsComplex mul(LiterateProgramsComplex op) {
+      LiterateProgramsComplex result = new LiterateProgramsComplex();
       result.setRe(this.re * op.getRe() - this.im * op.getIm());
       result.setIm(this.re * op.getIm() + this.im * op.getRe());
       return result;
     }
 
-    public Complex div(Complex op) {
-      Complex result = new Complex(this);
+    public LiterateProgramsComplex div(LiterateProgramsComplex op) {
+      LiterateProgramsComplex result = new LiterateProgramsComplex(this);
       result = result.mul(op.getConjugate());
      double opNormSq = op.getRe()*op.getRe()+op.getIm()*op.getIm();
       result.setRe(result.getRe() / opNormSq);
       result.setIm(result.getIm() / opNormSq);
       return result;
     }
-    public Complex fromPolar(double magnitude, double angle) {
-      Complex result = new Complex();
+    public LiterateProgramsComplex fromPolar(double magnitude, double angle) {
+      LiterateProgramsComplex result = new LiterateProgramsComplex();
       result.setRe(magnitude * Math.cos(angle));
       result.setIm(magnitude * Math.sin(angle));
       return result;
@@ -96,8 +96,8 @@ public class Complex {
     public double getAngle() {
       return Math.atan2(this.im, this.re);
     }
-    public Complex getConjugate() {
-      return new Complex(this.re, this.im * (-1));
+    public LiterateProgramsComplex getConjugate() {
+      return new LiterateProgramsComplex(this.re, this.im * (-1));
     }  
     public String toString() {
       if (this.re == 0) {
