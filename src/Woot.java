@@ -1,5 +1,4 @@
 import javafx.geometry.Insets;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -36,7 +35,6 @@ public class Woot extends Application {
 	private static final boolean BIG_ENDIAN = true;
 	
 	private LineChart<Number,Number> lineChart;
-	public Integer[] audioData;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -60,8 +58,12 @@ public class Woot extends Application {
 		}
 	}
 	
+	private void DisplaySpectrogramData(PrincetonComplex[][] results) {
+		
+	}
+	
 	@Override
-	public void start (Stage primaryStage) {
+	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Woot");
 		
 		StackPane root = new StackPane();
@@ -86,6 +88,9 @@ public class Woot extends Application {
 							
 							lineChart.getData().clear();
 							lineChart.getData().add(series);
+							
+							// display the spectrogram data
+							DisplaySpectrogramData(audioListener.spectrogramData);
 							
 							audioListener = null;
 						}
@@ -114,8 +119,6 @@ public class Woot extends Application {
             	}
             	else {
             		audioListener.running = false;
-            		//audioData = audioListener.audioData;
-            		//audioListener = null;
             		System.out.println("Not Listening!");
             	}
             }
